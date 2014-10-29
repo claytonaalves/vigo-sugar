@@ -1,10 +1,15 @@
 import bottle
 import vigo
+import json
 from contrib import bottle_mysql
 from bottle import request, response
+from serializers import json_serial
+from cors import EnableCors
 
 app = bottle.Bottle()
-plugin = bottle_mysql.Plugin(dbuser="root", dbpass="", dbname="vigo", charset="latin1")
+plugin = bottle_mysql.Plugin(dbuser="root", dbpass="", dbname="vigo_teste", charset="latin1")
+
+app.install(EnableCors())
 app.install(plugin)
 
 # Criar um novo cliente
@@ -22,8 +27,8 @@ def novo_cliente(db):
 # GET		https://servidor_vigo/api/clientes/{ID_DO_CLIENTE}
 @app.route('/clientes/<id:int>', method='GET')
 def obter_cliente(id, db):
-    db.execute('select numero, nome from usuarios where numero=%s', (id, ))
-    return db.fetchone()
+    db.execute('select * from usuarios where numero=%s', (id, ))
+    return json.dumps(db.fetchone(), default=json_serial, encoding='latin1')
 
 # Atualizar cliente
 # POST		https://servidor_vigo/api/clientes/{ID_DO_CLIENTE}
@@ -49,6 +54,7 @@ def listar_clientes(db):
     clientes = vigo.Clientes(db)
     return clientes.json()
 
-bottle.debug(True)
-app.run()
+if __name__=="__main__":
+    bottle.debug(True)
+    app.run()
 

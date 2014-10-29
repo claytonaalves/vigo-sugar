@@ -26,7 +26,7 @@ class Clientes:
         self.db = db
 
     def json(self):
-        self.db.execute('select %s from usuarios' % self.columns)
+        self.db.execute('select * from usuarios')
         return json.dumps(self.db.fetchall(), default=json_serial, encoding='latin1')
 
     def insert(self, json_object):
