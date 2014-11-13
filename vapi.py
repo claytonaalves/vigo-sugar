@@ -60,7 +60,8 @@ def chamado_por_numero(numero, db):
 def inserir_atendimento(db):
     response.content_type = 'application/json'
     atendimento = vigo.Atendimentos(db)
-    return atendimento.insert(request.json)
+    retorno = atendimento.insert(request.json)
+    return json.dumps(retorno, default=json_serial)
 
 @app.route("/chamados/<numero>", method="PUT")
 def altera_chamado(numero, db):
