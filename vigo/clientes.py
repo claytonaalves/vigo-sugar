@@ -1,6 +1,5 @@
 #coding: utf8
 import json
-from serializers import json_serial
 from dbexceptions import CustomException
 
 class ENumeroInvalido(CustomException):
@@ -13,7 +12,7 @@ class Clientes:
 
     def json(self):
         self.db.execute('select * from usuarios')
-        return json.dumps(self.db.fetchall(), default=json_serial, encoding='latin1')
+        return self.db.fetchall()
 
     def insert(self, json_object):
         # valida se os campos obrigatorios foram informados
@@ -44,6 +43,6 @@ class Clientes:
 
     def find_by_id(self, id):
         self.db.execute('select * from usuarios where numero=%s', (id, ))
-        return json.dumps(self.db.fetchone(), default=json_serial, encoding='latin1')
+        return self.db.fetchone()
 
 
