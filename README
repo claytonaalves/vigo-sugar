@@ -1,1 +1,12 @@
 API para integração do Vigo (versão 8) com o sugar-crm.
+
+TODO:
+
+  * Implement some query parameters to filter which filds to return
+
+    /clientes?fields=nome,celular
+
+  * Implement a search endpoint
+
+    /search?q=nome+do+cliente
+
