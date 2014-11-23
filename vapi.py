@@ -24,16 +24,21 @@ def obter_cliente(id, db):
 
 @app.route("/clientes", method="POST")
 def novo_cliente(db):
+    response.content_type = 'application/json'
     clientes = vigo.Clientes(db)
     try:
-        clientes.insert(request.json)
-    except vigo.ENumeroInvalido as e:
+        retorno = clientes.insert(request.json)
+    except vigo.clientes.ENumeroInvalido as e:
         response.status = e.code
         return {"errors": [{"code": e.code, "description": e.message}]} 
+    return json.dumps(retorno, default=json_serial)
 
-@app.route('/clientes/<id:int>', method='PUT')
-def atualizar_cliente(id, db):
-    pass
+@app.route("/clientes/<numero:int>", method="PUT")
+def atualizar_cliente(numero, db):
+    response.content_type = 'application/json'
+    clientes = vigo.Clientes(db)
+    retorno = clientes.update(numero, request.json)
+    return json.dumps(retorno, default=json_serial)
 
 @app.route('/clientes/<id:int>', method='DELETE')
 def remover_cliente(id, db):
