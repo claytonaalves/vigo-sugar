@@ -53,7 +53,7 @@ def remover_cliente(id, db):
 def listar_atendimentos(db):
     response.content_type = 'application/json'
     atendimentos = vigo.Atendimentos(db)
-    return json.dumps(atendimentos.all(), default=json_serial)
+    return json.dumps(atendimentos.all(), default=json_serial, encoding='latin1')
 
 @app.route("/chamados/<numero>", method="GET")
 def chamado_por_numero(numero, db):
